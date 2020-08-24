@@ -311,6 +311,61 @@ entrySchema.statics.getVolumeTema = async (startDate) => {
     return reply
 }
 
+entrySchema.statics.getNuvemWordcloud = async (startDate) => {
+    var reply = {
+        data: [
+            // { value: 'tributária', count: 38 },
+            // { value: 'reforma', count: 30 },
+            { value: 'governo', count: 28 },
+            { value: 'livros', count: 25 },
+            { value: 'proposta', count: 33 },
+            { value: 'como', count: 18 },
+            { value: 'brasileiro', count: 20 },
+            { value: 'cofins', count: 38 },
+            { value: 'política', count: 30 },
+            { value: 'benefícios', count: 28 },
+            { value: 'nacional', count: 25 },
+            { value: 'taxação', count: 33 },
+            { value: 'administrativa', count: 18 },
+            { value: 'federal', count: 20 },
+            { value: '12%', count: 38 },
+            { value: 'estado', count: 30 },
+            { value: 'bolsonaro', count: 28 },
+            { value: 'contra', count: 25 },
+            { value: 'presidente', count: 33 },
+            { value: 'muito', count: 18 },
+            { value: 'brasil', count: 20 },
+            { value: 'projeto', count: 38 },
+            { value: 'ainda', count: 30 },
+            { value: 'livro', count: 28 },
+            { value: 'economia', count: 25 },
+            { value: 'paulo', count: 33 },
+            { value: 'congresso', count: 18 },
+            { value: 'está', count: 20 },
+            { value: 'país', count: 38 },
+            { value: 'já', count: 30 },
+            { value: 'vai', count: 28 },
+            { value: 'livros', count: 25 },
+            { value: 'impostos', count: 33 },
+            { value: 'guedes', count: 18 },
+            { value: 'carga', count: 20 },
+            { value: 'vai', count: 28 },
+            { value: 'fortunas', count: 25 },
+            { value: 'grandes', count: 33 },
+            { value: 'educação', count: 18 },
+            { value: 'pandemia', count: 20 },
+        ]
+    }
+
+    for (let it = 0; it < reply.data.length; it++) {
+        var re = new RegExp(`.*${reply.data[it].value}.*`)
+        reply.data[it].count = await Entry.countDocuments({ "Conteudo": re })   
+    }
+        
+    return reply
+}
+
+
 //Methods for single instance
 entrySchema.methods.toJSON = function () {
     const entry = this

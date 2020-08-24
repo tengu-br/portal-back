@@ -76,4 +76,15 @@ router.get('/volumeTema/:dataInicio', async (req, res) => {
     }
 })
 
+router.get('/nuvemWordcloud/:dataInicio', async (req, res) => {
+    try {
+        const data = await Entry.getNuvemWordcloud(req.params.dataInicio)
+        res.send(data)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
+
 module.exports = router
