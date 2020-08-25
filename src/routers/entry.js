@@ -85,6 +85,15 @@ router.get('/nuvemWordcloud/:dataInicio', async (req, res) => {
     }
 })
 
+router.get('/nuvemEmojicloud/:dataInicio', async (req, res) => {
+    try {
+        const data = await Entry.getNuvemEmojicloud(req.params.dataInicio)
+        res.send(data)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 
 
 module.exports = router

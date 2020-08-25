@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const date = require('date-and-time');
+const { all, isEmoji, extractEmoji } = require('extract-emoji');
+// import { all, isEmoji, extractEmoji } from 'extract-emoji';
 
 const entrySchema = new mongoose.Schema({
     Ordem: {
@@ -316,55 +318,122 @@ entrySchema.statics.getNuvemWordcloud = async (startDate) => {
         data: [
             // { value: 'tributária', count: 38 },
             // { value: 'reforma', count: 30 },
-            { value: 'governo', count: 28 },
-            { value: 'livros', count: 25 },
-            { value: 'proposta', count: 33 },
-            { value: 'como', count: 18 },
-            { value: 'brasileiro', count: 20 },
-            { value: 'cofins', count: 38 },
-            { value: 'política', count: 30 },
-            { value: 'benefícios', count: 28 },
-            { value: 'nacional', count: 25 },
-            { value: 'taxação', count: 33 },
-            { value: 'administrativa', count: 18 },
-            { value: 'federal', count: 20 },
-            { value: '12%', count: 38 },
-            { value: 'estado', count: 30 },
-            { value: 'bolsonaro', count: 28 },
-            { value: 'contra', count: 25 },
-            { value: 'presidente', count: 33 },
-            { value: 'muito', count: 18 },
-            { value: 'brasil', count: 20 },
-            { value: 'projeto', count: 38 },
-            { value: 'ainda', count: 30 },
-            { value: 'livro', count: 28 },
-            { value: 'economia', count: 25 },
-            { value: 'paulo', count: 33 },
-            { value: 'congresso', count: 18 },
-            { value: 'está', count: 20 },
-            { value: 'país', count: 38 },
-            { value: 'já', count: 30 },
-            { value: 'vai', count: 28 },
-            { value: 'livros', count: 25 },
-            { value: 'impostos', count: 33 },
-            { value: 'guedes', count: 18 },
-            { value: 'carga', count: 20 },
-            { value: 'vai', count: 28 },
-            { value: 'fortunas', count: 25 },
-            { value: 'grandes', count: 33 },
-            { value: 'educação', count: 18 },
-            { value: 'pandemia', count: 20 },
+            { value: 'governo', count: 0 },
+            { value: 'livros', count: 0 },
+            { value: 'proposta', count: 0 },
+            { value: 'como', count: 0 },
+            { value: 'brasileiro', count: 0 },
+            { value: 'cofins', count: 0 },
+            { value: 'política', count: 0 },
+            { value: 'benefícios', count: 0 },
+            { value: 'nacional', count: 0 },
+            { value: 'taxação', count: 0 },
+            { value: 'administrativa', count: 0 },
+            { value: 'federal', count: 0 },
+            { value: '12%', count: 0 },
+            { value: 'estado', count: 0 },
+            { value: 'bolsonaro', count: 0 },
+            { value: 'contra', count: 0 },
+            { value: 'presidente', count: 0 },
+            { value: 'muito', count: 0 },
+            { value: 'brasil', count: 0 },
+            { value: 'projeto', count: 0 },
+            { value: 'ainda', count: 0 },
+            { value: 'livro', count: 0 },
+            { value: 'economia', count: 0 },
+            { value: 'paulo', count: 0 },
+            { value: 'congresso', count: 0 },
+            { value: 'está', count: 0 },
+            { value: 'país', count: 0 },
+            { value: 'já', count: 0 },
+            { value: 'impostos', count: 0 },
+            { value: 'guedes', count: 0 },
+            { value: 'carga', count: 0 },
+            { value: 'vai', count: 0 },
+            { value: 'fortunas', count: 0 },
+            { value: 'grandes', count: 0 },
+            { value: 'educação', count: 0 },
+            { value: 'pandemia', count: 0 },
         ]
     }
 
     for (let it = 0; it < reply.data.length; it++) {
         var re = new RegExp(`.*${reply.data[it].value}.*`)
-        reply.data[it].count = await Entry.countDocuments({ "Conteudo": re })   
+        reply.data[it].count = await Entry.countDocuments({ "Conteudo": re })
     }
-        
+
     return reply
 }
 
+entrySchema.statics.getNuvemEmojicloud = async (startDate) => {
+    var reply = {
+        data: [
+            // { value: 'tributária', count: 38 },
+            // { value: 'reforma', count: 30 },
+            { value: '👇', count: 0 },
+            { value: '📚', count: 0 },
+            { value: '👉', count: 0 },
+            { value: '🇧', count: 0 },
+            { value: '😂', count: 0 },
+            { value: '👏', count: 0 },
+            { value: '📣', count: 0 },
+            { value: '🚨', count: 0 },
+            { value: '😡', count: 0 },
+            { value: '👍', count: 0 },
+            { value: '📲', count: 0 },
+            { value: '🗣', count: 0 },
+            { value: '🙏', count: 0 },
+            { value: '💸', count: 0 },
+            { value: '💚', count: 0 },
+            { value: '🚩', count: 0 },
+            { value: '📖', count: 0 },
+            { value: '🔴', count: 0 },
+            { value: '💛', count: 0 },
+            { value: '😉', count: 0 },
+            { value: '😠', count: 0 },
+            { value: '💡', count: 0 },
+            { value: '😍', count: 0 },
+            { value: '😅', count: 0 },
+            { value: '💰', count: 0 },
+            { value: '👀', count: 0 },
+            { value: '🔹', count: 0 },
+            { value: '👊', count: 0 },
+            { value: '😭', count: 0 },
+            { value: '📌', count: 0 },
+            { value: '😱', count: 0 },
+            { value: '📷', count: 0 },
+            { value: '💻', count: 0 },
+            { value: '👎', count: 0 },
+            { value: '😒', count: 0 },
+            { value: '😎', count: 0 },
+        ]
+    }
+
+    //TODO: mudar para fazer as contas dinamicamente
+    for (let it = 0; it < reply.data.length; it++) {
+        var re = new RegExp(`.*${reply.data[it].value}.*`)
+        reply.data[it].count = await Entry.countDocuments({ "Conteudo": re })
+        if (reply.data[it].count < 10) {
+            reply.data[it].count = 20
+        } else if (reply.data[it].count < 30) {
+            reply.data[it].count = 34
+        } else if (reply.data[it].count < 40) {
+            reply.data[it].count = 50
+        } else if (reply.data[it].count < 50) {
+            reply.data[it].count = 70
+        }else if (reply.data[it].count < 65){
+            reply.data[it].count = 100
+        } else {
+            reply.data[it].count = 120
+        }
+    }
+
+
+    reply.data[3].value = '🇧🇷'
+    reply.data = reply.data.sort(() => Math.random() - 0.5);
+
+    return reply
+}
 
 //Methods for single instance
 entrySchema.methods.toJSON = function () {
