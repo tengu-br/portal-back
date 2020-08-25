@@ -45,7 +45,7 @@ router.get('/publicacaoEmDestaque/:dataInicio', async (req, res) => {
         tweet.id = await Entry.getPopularTweet(req.params.dataInicio)
         res.send(tweet)
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
     }
 })
 
