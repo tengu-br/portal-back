@@ -125,7 +125,7 @@ const entrySchema = new mongoose.Schema({
         type: String,
     },
     AVE: {
-        type: String,
+        type: Number,
     },
     AutorID: {
         type: String
@@ -223,7 +223,7 @@ entrySchema.statics.getSevenDaysCount = async (startDate) => {
 }
 
 entrySchema.statics.getPopularTweet = async (periodo) => {
-    const tweet = await Entry.where("AVE").ne("").where("Canal").equals("Twitter").sort({ AVE: -1 }).limit(1).collation({numericOrdering: true})
+    const tweet = await Entry.where("AVE").ne("").where("Canal").equals("Twitter").sort({ AVE: -1 }).limit(1)
     const tweetID = tweet[0].Link.split("/")
     return tweetID[5]
 }
