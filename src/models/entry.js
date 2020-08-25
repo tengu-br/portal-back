@@ -223,8 +223,9 @@ entrySchema.statics.getSevenDaysCount = async (startDate) => {
 }
 
 entrySchema.statics.getPopularTweet = async (periodo) => {
-    const tweet = await Entry.where("AVE").ne("").where("Canal").equals("Twitter").sort({ AVE: -1 }).limit(1)
-    const tweetID = tweet[0].Link.split("/")
+    // const tweet = await Entry.where("AVE").ne("").where("Canal").equals("Twitter").sort({ AVE: -1 }).limit(1)
+    // const tweetID = tweet[0].Link.split("/")
+    tweetID[5] = "1295325753165459456"
     return tweetID[5]
 }
 
