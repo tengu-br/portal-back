@@ -94,6 +94,30 @@ router.get('/nuvemEmojicloud/:dataInicio', async (req, res) => {
     }
 })
 
+router.get('/citacoesRede/:dataInicio', async (req, res) => {
+    try {
+        const data = await Entry.getCitacoesRede(req.params.dataInicio)
+        res.send(data)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
 
+router.get('/polaridadePartidos/:dataInicio', async (req, res) => {
+    try {
+        const data = await Entry.getPolaridadePartidos(req.params.dataInicio)
+        res.send(data)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
 
+router.get('/polaridadeAtores/:dataInicio', async (req, res) => {
+    try {
+        const data = await Entry.getPolaridadeAtores(req.params.dataInicio)
+        res.send(data)
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
 module.exports = router

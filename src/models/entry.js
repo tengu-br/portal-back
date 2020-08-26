@@ -422,7 +422,7 @@ entrySchema.statics.getNuvemEmojicloud = async (startDate) => {
             reply.data[it].count = 50
         } else if (reply.data[it].count < 50) {
             reply.data[it].count = 70
-        }else if (reply.data[it].count < 65){
+        } else if (reply.data[it].count < 65) {
             reply.data[it].count = 100
         } else {
             reply.data[it].count = 120
@@ -435,6 +435,82 @@ entrySchema.statics.getNuvemEmojicloud = async (startDate) => {
 
     return reply
 }
+
+entrySchema.statics.getCitacoesRede = async (startDate) => {
+    //
+    //Esse codigo ve quais sao os temas mais populares, mas isos n foi especificado para esse grafico e tb seria redundante
+    // elegante: fazer uma funcao q busca isso (e armazena no banco periodicamente) e aqui so puxa os resultados (idem p/ a outra fucao com esse codigo)
+    //
+
+    // var temasCount = []
+    // const temas = ["Carga Tributária", "Políticos", "Tramitação", "Estados e Municípios", "Policiais", "Pro-Reforma", "ICMS", "Oposição",
+    //     "Imposto de Renda", "Imposto Único", "Contra-Reforma", "PIS", "Cofins", "Trabalhadores", "CPMF", "Câmara dos Deputados",
+    //     "Senado Federal", "Meio Ambiente", "Contribuição", "Servidor Público", "Aposentados", "Professores", "ISS", "Explicações",
+    //     "IBS", "IPI", "Militares", "Único", "Sonegação", "CSLL", "Publicidade", "Oficial", "Capitalização", "Serviços Digitais",
+    //     "Pensionistas", "Institucional", "Pessoa Com Deficiência", "BPC"]
+
+    // for (let themeIt = 0; themeIt < temas.length; themeIt++) {
+    //     var re = new RegExp(`.*${temas[themeIt]}.*`)
+    //     temasCount[themeIt] = await Entry.countDocuments({ "Temas": re })
+    // }
+
+    // for (let it = 0; it < 8; it++) {
+
+    //     var maxIndex = temasCount
+    //         .map((v, i, self) => v === Math.max(...self) ? i : -1)
+    //         .filter(index => index !== -1);
+    //     reply.temasNome.push(temas.splice(maxIndex, 1)[0])
+    //     reply.temasCount.push(temasCount.splice(maxIndex, 1)[0])
+    // }
+    const temas = ["Carga Tributária", "Estados e Municípios", "Pro-Reforma"]
+    var fb = []; var yt = []; var ig = []
+    var reply = [fb, ig, yt]
+
+    // var re = new RegExp(`.*${temas[0]}.*`)
+    // reply[0] = await Entry.countDocuments({ "Temas": re }).where("Canal").equals("Facebook")
+    for (let themeIt = 0; themeIt < temas.length; themeIt++) {
+        var re = new RegExp(`.*${temas[themeIt]}.*`)
+        fb[themeIt] = await Entry.countDocuments({ "Temas": re }).where("Canal").equals("Facebook")
+        yt[themeIt] = await Entry.countDocuments({ "Temas": re }).where("Canal").equals("YouTube")
+        ig[themeIt] = await Entry.countDocuments({ "Temas": re }).where("Canal").equals("Instagram")
+    }
+    return reply
+}
+
+entrySchema.statics.getPolaridadePartidos = async (startDate) => {
+    const partidos = ['PT', 'PSOL', 'PSDB', 'PSL']
+    var ps = []; var nt = []; var ng = []
+    var reply = [ps, nt, ng]
+
+    for (let themeIt = 0; themeIt < partidos.length; themeIt++) {
+        var re = new RegExp(`.* ${partidos[themeIt]} .*`)
+
+        ps[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Positivo") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Positive")
+        nt[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Neutro") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Neutral")
+        ng[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Negativo") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Negative")
+
+    }
+
+    return reply
+}
+
+entrySchema.statics.getPolaridadeAtores = async (startDate) => {
+    const partidos = ['PT', 'PSOL', 'PSDB', 'PSL']
+    var ps = []; var nt = []; var ng = []
+    var reply = [ps, nt, ng]
+
+    for (let themeIt = 0; themeIt < partidos.length; themeIt++) {
+        var re = new RegExp(`.* ${partidos[themeIt]} .*`)
+
+        ps[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Positivo") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Positive")
+        nt[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Neutro") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Neutral")
+        ng[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Negativo") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Negative")
+
+    }
+
+    return reply
+}
+
 
 //Methods for single instance
 entrySchema.methods.toJSON = function () {
