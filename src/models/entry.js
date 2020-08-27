@@ -423,9 +423,9 @@ entrySchema.statics.getNuvemEmojicloud = async (startDate) => {
         } else if (reply.data[it].count < 50) {
             reply.data[it].count = 70
         } else if (reply.data[it].count < 65) {
-            reply.data[it].count = 100
+            reply.data[it].count = 80
         } else {
-            reply.data[it].count = 120
+            reply.data[it].count = 90
         }
     }
 
@@ -495,17 +495,31 @@ entrySchema.statics.getPolaridadePartidos = async (startDate) => {
 }
 
 entrySchema.statics.getPolaridadeAtores = async (startDate) => {
-    const partidos = ['PT', 'PSOL', 'PSDB', 'PSL']
-    var ps = []; var nt = []; var ng = []
-    var reply = [ps, nt, ng]
+    const atores = ['Tabata Amaral','Marina Silva', 'Ivan Valente', 'Marcel van Hattem']
+    var reacoesPositivas = []; var reacoesNegativas = []
+    var reply = []
 
-    for (let themeIt = 0; themeIt < partidos.length; themeIt++) {
-        var re = new RegExp(`.* ${partidos[themeIt]} .*`)
+    // for (let themeIt = 0; themeIt < atores.length; themeIt++) {
+    //     cell = await Entry.aggregate([{ $match: { "AutorNome": atores[themeIt] } }, {
+    //         $project:
+    //         {
+    //             totalGostei: "$CurtidasOuGostei" ,
+    //             totalOdiei: { $sum: ["$Raiva", "$NaoGostei"] }
+    //         },
+    //     }])
 
-        ps[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Positivo") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Positive")
-        nt[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Neutro") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Neutral")
-        ng[themeIt] = await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Negativo") + await Entry.countDocuments({ "Conteudo": re }).where("Polaridade").equals("Negative")
+    for (let themeIt = 0; themeIt < atores.length; themeIt++) {
+        cell = await Entry.aggregate([{ $match: { "AutorNome": atores[themeIt] } }, {
+            $group: {
+                _id: "$AutorNome",
+                totalGostei: { $sum: "$CurtidasOuGostei" },
+                totalNaogostei: { $sum: "$NaoGostei" },
+                totalRaiva: { $sum: "$Raiva" },
+            }
+        }])
 
+        cell = [cell[0].totalGostei, cell[0].totalNaogostei + cell[0].totalRaiva]
+        reply.push(cell)
     }
 
     return reply
